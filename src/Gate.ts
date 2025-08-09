@@ -4,6 +4,27 @@ export interface Gate {
     compute(inputs: Level[]): Level;
 }
 
+export class NotGate implements Gate {
+    compute(inputs: Level[]): Level {
+        if (inputs.length <= 0) {
+            return Level.Z;
+        }
+        if (inputs[0] === Level.X) {
+            return Level.X;
+        }
+        return inputs[0] === Level.H ? Level.L : Level.H;
+    }
+}
+
+export class BufferGate implements Gate {
+    compute(inputs: Level[]): Level {
+        if (inputs.length <= 0) {
+            return Level.Z;
+        }
+        return inputs[0]!;
+    }
+}
+
 export class AndGate implements Gate {
     compute(inputs: Level[]): Level {
         if (inputs.includes(Level.X)) {
@@ -22,14 +43,6 @@ export class OrGate implements Gate {
     }
 }
 
-export class NotGate implements Gate {
-    compute(inputs: Level[]): Level {
-        if (inputs[0] === Level.X) {
-            return Level.X;
-        }
-        return inputs[0] === Level.H ? Level.L : Level.H;
-    }
-}
 
 export class NandGate implements Gate {
     compute(inputs: Level[]): Level {
