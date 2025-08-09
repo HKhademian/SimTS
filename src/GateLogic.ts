@@ -1,10 +1,10 @@
 import { Level } from './Level';
 
-export interface Gate {
+export interface GateLogic {
     compute(inputs: Level[]): Level;
 }
 
-export class NotGate implements Gate {
+export class NotGateLogic implements GateLogic {
     compute(inputs: Level[]): Level {
         if (inputs.length <= 0) {
             return Level.Z;
@@ -16,7 +16,7 @@ export class NotGate implements Gate {
     }
 }
 
-export class BufferGate implements Gate {
+export class BufferGateLogic implements GateLogic {
     compute(inputs: Level[]): Level {
         if (inputs.length <= 0) {
             return Level.Z;
@@ -25,7 +25,7 @@ export class BufferGate implements Gate {
     }
 }
 
-export class AndGate implements Gate {
+export class AndGateLogic implements GateLogic {
     compute(inputs: Level[]): Level {
         if (inputs.includes(Level.X)) {
             return Level.X;
@@ -34,7 +34,7 @@ export class AndGate implements Gate {
     }
 }
 
-export class OrGate implements Gate {
+export class OrGateLogic implements GateLogic {
     compute(inputs: Level[]): Level {
         if (inputs.includes(Level.X)) {
             return Level.X;
@@ -44,7 +44,7 @@ export class OrGate implements Gate {
 }
 
 
-export class NandGate implements Gate {
+export class NandGateLogic implements GateLogic {
     compute(inputs: Level[]): Level {
         if (inputs.includes(Level.X)) {
             return Level.X;
@@ -53,7 +53,7 @@ export class NandGate implements Gate {
     }
 }
 
-export class NorGate implements Gate {
+export class NorGateLogic implements GateLogic {
     compute(inputs: Level[]): Level {
         if (inputs.includes(Level.X)) {
             return Level.X;
@@ -62,7 +62,7 @@ export class NorGate implements Gate {
     }
 }
 
-export class XorGate implements Gate {
+export class XorGateLogic implements GateLogic {
     compute(inputs: Level[]): Level {
         if (inputs.includes(Level.X)) {
             return Level.X;
@@ -71,7 +71,7 @@ export class XorGate implements Gate {
     }
 }
 
-export class XnorGate implements Gate {
+export class XnorGateLogic implements GateLogic {
     compute(inputs: Level[]): Level {
         if (inputs.includes(Level.X)) {
             return Level.X;
