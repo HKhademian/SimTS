@@ -1,5 +1,8 @@
 {
   "name": "simts",
   "version": "0.0.1",
-  "author": "Hossain Khademian"
+  "author": "Hossain Khademian",
+  "devDependencies": {
+    "typescript": "^5.9.2"
+  }
 }
