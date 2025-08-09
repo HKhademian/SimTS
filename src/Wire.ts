@@ -5,9 +5,9 @@ type tWireDriver = () => Level;
 type tWireListener = (level: Level) => void;
 
 export class Wire {
-    private drivers: Array<tWireDriver> = [];
+    private drivers: tWireDriver[] = [];
     private listeners: tWireListener[] = [];
-    private _level: Level = Level.X;
+    private _level: Level = Level.Z;
 
     attachDriver(driver: tWireDriver) {
         this.drivers.push(driver);
