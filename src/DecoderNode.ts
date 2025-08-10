@@ -243,21 +243,19 @@ export class BCDToDecimalNode extends aNode {
         const inputEN = this.inputEN = inputs[0]!;
         const inputData = this.inputData = inputs.slice(1);
 
+        const nots = inputData.map((input) => new NotGateNode([input]).output);
+
         this.outputs = [];
-        for (let digit = 0; digit < 10; digit++) {
+        for (let digit = 0; digit < 10; ++digit) {
             const bcd = [
-                (digit & 1) !== 0,
-                (digit & 2) !== 0,
-                (digit & 4) !== 0,
-                (digit & 8) !== 0,
+                !!(digit & 1),
+                !!(digit & 2),
+                !!(digit & 4),
+                !!(digit & 8),
             ];
             const ands: iOutputNode[] = [];
             for (let bit = 0; bit < 4; bit++) {
-                if (bcd[bit]) {
-                    ands.push(inputData[bit]!);
-                } else {
-                    ands.push(new NotGateNode([inputData[bit]!]).output);
-                }
+                ands.push(bcd[bit] ? inputData[bit]! : nots[bit]!);
             }
             this.outputs.push(new AndGateNode([inputEN, ...ands]).output);
         }
