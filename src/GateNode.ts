@@ -1,8 +1,10 @@
 import {
-    type iLevelNode,
-    ComputeLevelNode,
-    Level,
+    Level
 } from "./Level";
+import {
+    type iOutputNode,
+    ComputeNode,
+} from "./LevelNode";
 import {
     type tTick,
     aNode,
@@ -19,19 +21,19 @@ export abstract class aGateNode extends aNode {
     protected abstract readonly gateLogic: iGateLogic;
 
     private _output: Level = Level.Z;
-    public readonly output: iLevelNode = new ComputeLevelNode(this._output, (tick) => {
-        this.onUpdate(tick);
+    public readonly output: iOutputNode = new ComputeNode(this._output, (_prevTick, tick) => {
+        this.update(tick);
         return this._output;
     });
 
     protected constructor(
-        public readonly inputs: iLevelNode[],
+        public readonly inputs: iOutputNode[],
     ) { super(); }
 
     protected override onUpdate(tick: tTick): void {
         const levels = this.inputs.map(input => {
             input.update(tick);
-            return input.level;
+            return input.output;
         });
         this._output = this.gateLogic(levels);
     }

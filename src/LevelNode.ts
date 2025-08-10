@@ -1,7 +1,7 @@
 import { Level } from "./Level";
 import { aNode, type iNode, type tTick } from "./Node";
 
-export interface iOuputNode<
+export interface iOutputNode<
     OUT extends Level | Level[] = Level,
 > extends iNode {
     get output(): OUT;
@@ -9,7 +9,7 @@ export interface iOuputNode<
 
 export class ConstNode<
     OUT extends Level | Level[] = Level,
-> implements iOuputNode<OUT> {
+> implements iOutputNode<OUT> {
     constructor(
         private readonly _output: OUT,
     ) { }
@@ -23,7 +23,7 @@ export class ConstNode<
 
 export class MutNode<
     OUT extends Level | Level[] = Level,
-> implements iOuputNode<OUT> {
+> implements iOutputNode<OUT> {
     constructor(
         private _output: OUT,
     ) { }
@@ -40,7 +40,7 @@ export class MutNode<
 
 export class ComputeNode<
     OUT extends Level | Level[] = Level,
-> extends aNode implements iOuputNode<OUT> {
+> extends aNode implements iOutputNode<OUT> {
 
     constructor(
         private _output: OUT,
@@ -56,17 +56,16 @@ export class ComputeNode<
     }
 }
 
-export class DynamicNode<
-    OUT extends Level | Level[] = Level,
-> extends ComputeNode<OUT> {
+export class DynamicNode extends ComputeNode<Level> {
     constructor(
-        node: iOuputNode<OUT>,
+        outIndex: number,
+        node: iOutputNode<Level[]>,
     ) {
         super(
-            node.output,
+            node.output[outIndex]!,
             (_prevTick, tick) => {
                 node.update(tick);
-                return node.output;
+                return node.output[outIndex]!;
             },
         );
     }
