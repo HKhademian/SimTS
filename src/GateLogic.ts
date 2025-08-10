@@ -6,14 +6,25 @@ export const Not_GateLogic: iGateLogic = (inputs) => {
     if (inputs.length <= 0) {
         return Level.Z;
     }
-    if (inputs[0] === Level.X) {
+    const EN = inputs.length > 1 ? inputs[1] : Level.H;
+    if (EN === Level.X || inputs[0] === Level.X || inputs[0] === Level.Z) {
         return Level.X;
+    }
+    if (EN !== Level.H) {
+        return Level.Z;
     }
     return inputs[0] === Level.H ? Level.L : Level.H;
 };
 
 export const Buffer_GateLogic: iGateLogic = (inputs) => {
     if (inputs.length <= 0) {
+        return Level.Z;
+    }
+    const EN = inputs.length > 1 ? inputs[1] : Level.H;
+    if (EN === Level.X) {
+        return Level.X;
+    }
+    if (EN !== Level.H) {
         return Level.Z;
     }
     return inputs[0]!;
