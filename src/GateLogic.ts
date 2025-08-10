@@ -1,7 +1,11 @@
 import { Level } from './Level';
 
-export interface GateLogic {
+export interface iGateLogic {
     compute(inputs: Level[]): Level;
+}
+
+abstract class GateLogic implements iGateLogic {
+    abstract compute(inputs: Level[]): Level;
 }
 
 export class NotGateLogic implements GateLogic {
