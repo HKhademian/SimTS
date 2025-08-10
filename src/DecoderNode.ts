@@ -11,7 +11,17 @@ import {
     OrGateNode,
 } from './GateNode';
 
-export class Decoder1x2Node extends aNode {
+export abstract class MultiOutputNode extends aNode {
+    public abstract readonly outputs: iOutputNode[];
+
+    override onUpdate(t: tTick): void {
+        this.outputs.forEach((output) => {
+            output.update(t);
+        });
+    }
+}
+
+export class Decoder1x2Node extends MultiOutputNode {
     public readonly outputs: iOutputNode[];
 
     public get inputEN(): iOutputNode { return this.inputs[0]!; }
@@ -36,15 +46,9 @@ export class Decoder1x2Node extends aNode {
             new AndGateNode([EN, A]).output,
         ];
     }
-
-    override onUpdate(t: tTick): void {
-        this.outputs.forEach((output) => {
-            output.update(t);
-        });
-    }
 }
 
-export class Decoder2x4Node extends aNode {
+export class Decoder2x4Node extends MultiOutputNode {
     public readonly outputs: iOutputNode[];
 
     public readonly inputEN: iOutputNode;
@@ -76,15 +80,9 @@ export class Decoder2x4Node extends aNode {
             new AndGateNode([EN, A, B]).output,
         ];
     }
-
-    override onUpdate(t: tTick): void {
-        this.outputs.forEach((output) => {
-            output.update(t);
-        });
-    }
 }
 
-export class DecoderNode extends aNode {
+export class DecoderNode extends MultiOutputNode {
     public readonly outputs: iOutputNode[];
 
     public readonly inputEN: iOutputNode;
@@ -109,19 +107,17 @@ export class DecoderNode extends aNode {
             this.outputs.push(new AndGateNode([inputEN!, ...bits!]).output);
         }
     }
-
-    override onUpdate(t: tTick): void {
-        this.outputs.forEach((output) => {
-            output.update(t);
-        });
-    }
 }
 
-export class Encoder4to2Node extends aNode {
+export class Encoder4to2Node extends MultiOutputNode {
     public readonly outputs: iOutputNode[];
 
     public readonly inputEN: iOutputNode;
     public readonly inputData: iOutputNode[];
+    public readonly output: [iOutputNode, iOutputNode];
+    public readonly outputY0: iOutputNode;
+    public readonly outputY1: iOutputNode;
+    public readonly outputValid: iOutputNode;
 
     constructor(
         inputs: iOutputNode[],
@@ -136,20 +132,16 @@ export class Encoder4to2Node extends aNode {
         const inputD2 = inputData[2]!;
         const inputD3 = inputData[3]!;
 
-        this.outputs = [
-            new OrGateNode([inputD1, inputD3]).output,
-            new OrGateNode([inputD2, inputD3]).output,
-        ];
-    }
+        const outputValid = this.outputValid = new OrGateNode([inputD0, inputD1, inputD2, inputD3]).output;
+        const outputY1 = this.outputY1 = new OrGateNode([inputD3, inputD1]).output;
+        const outputY0 = this.outputY0 = new OrGateNode([inputD3, inputD2]).output;
 
-    override onUpdate(t: tTick): void {
-        this.outputs.forEach((output) => {
-            output.update(t);
-        });
+        this.output = [outputY0, outputY1];
+        this.outputs = [outputY1, outputY0, outputValid];
     }
 }
 
-export class PriorityEncoder4to2Node extends aNode {
+export class PriorityEncoder4to2Node extends MultiOutputNode {
     public readonly outputs: iOutputNode[];
 
     public readonly inputData: iOutputNode[];
@@ -184,15 +176,9 @@ export class PriorityEncoder4to2Node extends aNode {
         this.output = [outputY0, outputY1];
         this.outputs = [outputY1, outputY0, outputValid];
     }
-
-    override onUpdate(t: tTick): void {
-        this.outputs.forEach((output) => {
-            output.update(t);
-        });
-    }
 }
 
-export class DecimalToBCDNode extends aNode {
+export class DecimalToBCDNode extends MultiOutputNode {
     public readonly outputs: iOutputNode[];
 
     public readonly inputEN: iOutputNode;
@@ -223,15 +209,9 @@ export class DecimalToBCDNode extends aNode {
 
         this.outputs = outs.map((g) => new OrGateNode(g).output);
     }
-
-    override onUpdate(t: tTick): void {
-        this.outputs.forEach((output) => {
-            output.update(t);
-        });
-    }
 }
 
-export class BCDToDecimalNode extends aNode {
+export class BCDToDecimalNode extends MultiOutputNode {
     public readonly outputs: iOutputNode[];
 
     public readonly inputEN: iOutputNode;
@@ -259,11 +239,5 @@ export class BCDToDecimalNode extends aNode {
             }
             this.outputs.push(new AndGateNode([inputEN, ...ands]).output);
         }
-    }
-
-    override onUpdate(t: tTick): void {
-        this.outputs.forEach((output) => {
-            output.update(t);
-        });
     }
 }
