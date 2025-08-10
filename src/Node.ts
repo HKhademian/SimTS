@@ -1,7 +1,11 @@
 
 export type tTick = number & { /** @private */ readonly '': unique symbol; };
 
-export abstract class iNode {
+export interface iNode {
+    update(tick: tTick): void;
+}
+
+export abstract class Node implements iNode {
     private lastTick: tTick = <tTick>(-1);
 
     update(tick: tTick): void {
