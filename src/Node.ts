@@ -5,7 +5,7 @@ export interface iNode {
     update(tick: tTick): void;
 }
 
-export abstract class Node implements iNode {
+export abstract class aNode implements iNode {
     private lastTick: tTick = <tTick>(-1);
 
     update(tick: tTick): void {

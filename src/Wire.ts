@@ -1,9 +1,9 @@
 import { Level } from './Level';
 import type { iLevelNode } from './Level';
-import { Node } from './Node';
+import { aNode } from './Node';
 import type { tTick } from './Node';
 
-export class Wire extends Node implements iLevelNode {
+export class Wire extends aNode implements iLevelNode {
     private readonly nodes: iLevelNode[] = [];
     private _level: Level = Level.Z;
 

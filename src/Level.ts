@@ -1,4 +1,4 @@
-import type { iNode } from "./Node";
+import type { iNode, tTick } from "./Node";
 
 export const enum Level {
     /** CONFLICT */
@@ -40,6 +40,22 @@ export class MutLevelNode implements iLevelNode {
     }
 
     update(): void { }
+}
+
+export class ComputeLevelNode implements iLevelNode {
+
+    constructor(
+        private _level: Level = Level.Z,
+        private readonly computeFn: (tick: tTick) => Level = () => Level.Z,
+    ) { }
+
+    get level(): Level {
+        return this._level;
+    }
+
+    update(tick: tTick): void {
+        this._level = this.computeFn(tick);
+    }
 }
 
 export const LEVEL_X = new ConstLevelNode(Level.X);
