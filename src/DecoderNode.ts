@@ -37,7 +37,7 @@ export class Decoder1x2Node extends aNode {
         ];
     }
 
-    override onUpdate(_prevTick: tTick, t: tTick): void {
+    override onUpdate(t: tTick): void {
         this.outputs.forEach((output) => {
             output.update(t);
         });
@@ -77,7 +77,7 @@ export class Decoder2x4Node extends aNode {
         ];
     }
 
-    override onUpdate(_prevTick: tTick, t: tTick): void {
+    override onUpdate(t: tTick): void {
         this.outputs.forEach((output) => {
             output.update(t);
         });
@@ -110,7 +110,7 @@ export class DecoderNode extends aNode {
         }
     }
 
-    override onUpdate(_prevTick: tTick, t: tTick): void {
+    override onUpdate(t: tTick): void {
         this.outputs.forEach((output) => {
             output.update(t);
         });
@@ -142,7 +142,7 @@ export class Encoder4to2Node extends aNode {
         ];
     }
 
-    override onUpdate(_prevTick: tTick, t: tTick): void {
+    override onUpdate(t: tTick): void {
         this.outputs.forEach((output) => {
             output.update(t);
         });
@@ -185,7 +185,7 @@ export class PriorityEncoder4to2Node extends aNode {
         this.outputs = [outputY1, outputY0, outputValid];
     }
 
-    override onUpdate(_prevTick: tTick, t: tTick): void {
+    override onUpdate(t: tTick): void {
         this.outputs.forEach((output) => {
             output.update(t);
         });
@@ -224,7 +224,7 @@ export class DecimalToBCDNode extends aNode {
         this.outputs = outs.map((g) => new OrGateNode(g).output);
     }
 
-    override onUpdate(_prevTick: tTick, t: tTick): void {
+    override onUpdate(t: tTick): void {
         this.outputs.forEach((output) => {
             output.update(t);
         });
@@ -263,7 +263,7 @@ export class BCDToDecimalNode extends aNode {
         }
     }
 
-    override onUpdate(_prevTick: tTick, t: tTick): void {
+    override onUpdate(t: tTick): void {
         this.outputs.forEach((output) => {
             output.update(t);
         });

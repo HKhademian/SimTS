@@ -44,15 +44,15 @@ export class ComputeNode<
 
     constructor(
         private _output: OUT,
-        private readonly computeFn: (prevTick: tTick, tick: tTick) => OUT,
+        private readonly computeFn: (t: tTick) => OUT,
     ) { super(); }
 
     get output(): OUT {
         return this._output;
     }
 
-    override onUpdate(prevTick: tTick, tick: tTick): void {
-        this._output = this.computeFn(prevTick, tick);
+    override onUpdate(t: tTick): void {
+        this._output = this.computeFn(t);
     }
 }
 
@@ -63,7 +63,7 @@ export class DynamicNode extends ComputeNode<Level> {
     ) {
         super(
             node.output[outIndex]!,
-            (_prevTick, tick) => {
+            (tick) => {
                 node.update(tick);
                 return node.output[outIndex]!;
             },

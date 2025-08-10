@@ -21,8 +21,8 @@ export abstract class aGateNode extends aNode {
     protected abstract readonly gateLogic: iGateLogic;
 
     private _output: Level = Level.Z;
-    public readonly output: iOutputNode = new ComputeNode(this._output, (_prevTick, tick) => {
-        this.update(tick);
+    public readonly output: iOutputNode = new ComputeNode(this._output, (t) => {
+        this.update(t);
         return this._output;
     });
 
@@ -30,9 +30,9 @@ export abstract class aGateNode extends aNode {
         public readonly inputs: iOutputNode[],
     ) { super(); }
 
-    protected override onUpdate(tick: tTick): void {
+    protected override onUpdate(t: tTick): void {
         const levels = this.inputs.map(input => {
-            input.update(tick);
+            input.update(t);
             return input.output;
         });
         this._output = this.gateLogic(levels);

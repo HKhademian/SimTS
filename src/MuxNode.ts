@@ -36,8 +36,8 @@ export class MuxNode extends aNode {
         ]).output;
     }
 
-    override onUpdate(_prevTick: tTick, tick: tTick): void {
-        this.output.update(tick);
+    override onUpdate(t: tTick): void {
+        this.output.update(t);
     }
 }
 
@@ -66,8 +66,8 @@ export class DemuxNode extends aNode {
         ];
     }
 
-    override onUpdate(_prevTick: tTick, tick: tTick): void {
-        this.outputs[0].update(tick);
-        this.outputs[1].update(tick);
+    override onUpdate(t: tTick): void {
+        this.outputs[0].update(t);
+        this.outputs[1].update(t);
     }
 }
