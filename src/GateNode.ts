@@ -26,7 +26,7 @@ export abstract class aGateNode extends aNode {
         return this._output;
     });
 
-    protected constructor(
+    constructor(
         public readonly inputs: iOutputNode[],
     ) { super(); }
 
